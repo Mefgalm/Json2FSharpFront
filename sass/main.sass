@@ -1,0 +1,124 @@
+$fa-font-path: "./../node_modules/@fortawesome/fontawesome-free/webfonts/"
+@import './../node_modules/@fortawesome/fontawesome-free/scss/fontawesome'
+@import './../node_modules/@fortawesome/fontawesome-free/scss/regular'
+@import './../node_modules/@fortawesome/fontawesome-free/scss/solid'
+@import './../node_modules/@fortawesome/fontawesome-free/scss/brands'
+
+@import '../node_modules/bulma/bulma'
+
+html, body 
+    height: 100%
+    overflow-y: hidden
+
+#elmish-app
+    height: 100%
+
+textarea, select, input, button
+    outline: none
+
+.main
+    height: 100%
+    display: flex
+    flex-direction: column
+
+.header    
+    display: flex
+    background-color: #252525
+    -webkit-box-shadow: 0px 10px 8px 0px rgba(0, 0, 0, 0.75)
+    -moz-box-shadow:    0px 10px 8px 0px rgba(0, 0, 0, 0.75)
+    box-shadow:         0px 10px 8px 0px rgba(0, 0, 0, 0.75)
+    color: white
+    justify-content: space-between
+    align-items: center
+    padding-left: 25px
+    padding-right: 25px
+    padding-top: 5px
+    padding-bottom: 5px
+    z-index: 1
+
+.project-name
+    font-size: 25px
+    color: orange
+
+.links
+    display: flex
+    flex-direction: column
+
+.link
+    color: white
+    text-decoration: underline
+    font-weight: bold
+    &:hover
+        color: orange
+.area
+    flex: 1 1 auto
+    display: flex
+
+.input-area
+    min-width: 20%
+    width: calc(45% - 4px)
+    background-color: #252525
+    display: flex
+    padding: 10px
+    flex-direction: column
+
+.input-block
+    color: white    
+    padding: 20px 0px 20px 30px
+
+.input-root-name
+    color: #BEBDC5
+    width: 250px
+    background-color: #38373D
+    border: #38373D
+    padding: 4px
+
+.input-text-area    
+    flex: 1 1 auto
+    color: #BEBDC5
+    padding: 5px
+    resize: none
+    background-color: #38373D
+    border: #38373D
+
+.output-area
+    display: flex
+    min-width: 20%
+    width: calc(55% - 4px)
+    flex-direction: column
+
+.output-text-area
+    flex: 1 1 auto
+    color: #BEBDC5
+    background-color: #1E1E1E
+    border: #1E1E1E
+    padding: 20px 5px 5px 10px
+
+.settings
+    z-index: 1
+    width: 230px
+    position: absolute
+    right: 0
+    margin: 20px
+    background-color: orange
+    display: flex
+    flex-direction: column
+    padding: 20px
+    color: black
+
+.setting-row
+    display: flex
+    flex-direction: column
+
+.dropdown
+    width: 100%
+
+.dropdown button
+    width: 100%
+    display: flex
+    justify-content: space-between
+
+.drag-bar
+    width: 8px
+    background-color: orange
+    cursor: col-resize
