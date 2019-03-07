@@ -9,15 +9,31 @@ open Fable.Helpers.React.Props
 open Fable.FontAwesome
 open Fable.Import
 
-let collectionGenerationSet = Set.ofList [ Types.List; Array; Types.CharpList ]
-let outputFeatureSet = Set.ofList [ JustTypes; NewtosoftAttributes ]
 
-let dropDown<'a when 'a : equality> className (item: 'a) (items: seq<'a>) toView dispatch msg =
+type KeyValue<'key, 'value> =
+    { Key: 'key
+      Value: 'value }
+
+let collectionGenerationSet = Set.ofList [
+        { Key = Types.List; Value = "List" }
+        { Key = Types.Array; Value = "Array" }
+        { Key = Types.CharpList; Value = "List<T>" }
+    ]
+
+let outputFeatureSet = Set.ofList [
+        { Key = JustTypes; Value = "Just Types" }
+        { Key = NewtosoftAttributes; Value = "Newtosoft Attributes" }
+    ]
+
+let dropDown<'a when 'a : equality> className (item: 'a) (items: seq<KeyValue<'a, string>>) toView dispatch msg =
+    let getKey {Key = key} = key
+    let getValue {Value = value} = value
+
     Dropdown.dropdown [ Dropdown.IsHoverable ]
       [ div [ ClassName className ]
             [ Button.button []
                 [ span []
-                    [ str ((items |> Seq.find((=) item)) |> toView) ]
+                    [ str ((items |> Seq.find(getKey >> (=) item)) |> getValue |> toView) ]
                   Icon.icon [ Icon.Size IsSmall ]
                     [ Fa.i [ Fa.Solid.AngleDown ] [] ] ] ]
         Dropdown.menu []
@@ -25,9 +41,9 @@ let dropDown<'a when 'a : equality> className (item: 'a) (items: seq<'a>) toView
                 [ yield! items 
                             |> Seq.map(fun x -> div []                                              
                                                     [ Dropdown.Item.a 
-                                                        [ Dropdown.Item.IsActive (x = item)
-                                                          Dropdown.Item.Props [ OnClick (fun _ -> dispatch (msg x) ) ] ] 
-                                                        [ str (x |> toView) ] ]) ] ] ]
+                                                        [ Dropdown.Item.IsActive (getKey x = item)
+                                                          Dropdown.Item.Props [ OnClick (fun _ -> dispatch (msg (x |> getKey)) ) ] ] 
+                                                        [ str (x |> getValue |> toView) ] ]) ] ] ]
      
 let header =
     div [ ClassName "header" ]
