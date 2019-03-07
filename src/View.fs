@@ -25,15 +25,14 @@ let outputFeatureSet = Set.ofList [
         { Key = NewtosoftAttributes; Value = "Newtosoft Attributes" }
     ]
 
-let dropDown<'a when 'a : equality> className (item: 'a) (items: seq<KeyValue<'a, string>>) toView dispatch msg =
+let dropDown<'b, 'a when 'a : equality> className (item: 'a) (items: seq<KeyValue<'a, 'b>>) toView dispatch msg =
     let getKey {Key = key} = key
-    let getValue {Value = value} = value
 
     Dropdown.dropdown [ Dropdown.IsHoverable ]
       [ div [ ClassName className ]
             [ Button.button []
                 [ span []
-                    [ str ((items |> Seq.find(getKey >> (=) item)) |> getValue |> toView) ]
+                    [ str ((items |> Seq.find(getKey >> (=) item)) |> toView) ]
                   Icon.icon [ Icon.Size IsSmall ]
                     [ Fa.i [ Fa.Solid.AngleDown ] [] ] ] ]
         Dropdown.menu []
@@ -43,7 +42,7 @@ let dropDown<'a when 'a : equality> className (item: 'a) (items: seq<KeyValue<'a
                                                     [ Dropdown.Item.a 
                                                         [ Dropdown.Item.IsActive (getKey x = item)
                                                           Dropdown.Item.Props [ OnClick (fun _ -> dispatch (msg (x |> getKey)) ) ] ] 
-                                                        [ str (x |> getValue |> toView) ] ]) ] ] ]
+                                                        [ str (x |> toView) ] ]) ] ] ]
      
 let header =
     div [ ClassName "header" ]
@@ -82,10 +81,10 @@ let settings model dispatch  =
     div [ ClassName "settings" ]
         [ div [ ClassName "setting-row" ]
               [ label [] [ str "Collection generation" ]
-                dropDown "dropdown" model.CollGeneration collectionGenerationSet (fun x -> x.ToString()) dispatch CollectionGenerationSelected ]
+                dropDown "dropdown" model.CollGeneration collectionGenerationSet (fun { Value = x } -> x.ToString()) dispatch CollectionGenerationSelected ]
           div [ ClassName "setting-row" ]
               [ label [] [ str "Output features" ]
-                dropDown "dropdown" model.OutputFeature outputFeatureSet (fun x -> x.ToString()) dispatch OutputFeatureSelected ] ]
+                dropDown "dropdown" model.OutputFeature outputFeatureSet (fun { Value = x } -> x.ToString()) dispatch OutputFeatureSelected ] ]
 
 let drag = !^(fun e ->                
                 let outputAreaWidth = Browser.window.innerWidth - e?pageX
