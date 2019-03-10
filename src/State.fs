@@ -8,7 +8,7 @@ open System
 open Fable.Import
 open Fable.SimpleJson
 
-let productionUrl = "http://139.59.139.80/api/"
+let productionUrl = "https://139.59.139.80/api/"
 let devUrl = "http://localhost:51014/"
 
 type private Api = Api of string
