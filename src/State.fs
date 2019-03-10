@@ -8,30 +8,52 @@ open System
 open Fable.Import
 open Fable.SimpleJson
 
+let productionUrl = "http://139.59.139.80:81/"
+let devUrl = "http://localhost:51014/"
+
+type private Api = Api of string
+
+type private ApiType =
+    | GenerateStructure
+
+let private generateUrl baseUrl = function
+    | GenerateStructure -> Api (sprintf "%s%s" baseUrl "generate")
+
+type private RequestDataAndRoute<'a>  =
+    { Model : 'a
+      Api: Api }
+
+let private baseUrl =
+    #if DEBUG
+    devUrl
+    #endif
+    productionUrl
+
 let init args =
     { CollGeneration = CollectionGeneration.List
       OutputFeature = JustTypes
       Input = ""
       RootObjectName = "Root"
-      Output = "" }, Cmd.none
+      Output = "" }, Cmd.none   
 
-
-let fakeLoad model =
+let private generateDataStructure requestDataAndRoute =
     promise {
         let data =
-            { Data = model.Input
-              RootObjectName = model.RootObjectName
-              ListGeneratorType = model.CollGeneration
-              TypeGeneration = model.OutputFeature  }
+            { Data = requestDataAndRoute.Model.Input
+              RootObjectName = requestDataAndRoute.Model.RootObjectName
+              ListGeneratorType = requestDataAndRoute.Model.CollGeneration
+              TypeGeneration = requestDataAndRoute.Model.OutputFeature  }
 
-        let! post = postRecord "http://localhost:51014/generate" data []
+        let getUrl (Api url) = url
+
+        let! post = postRecord (requestDataAndRoute.Api |> getUrl) data []
 
         match post.Ok with
         | true ->
             return! post.text() |> Promise.map(fun x -> Json.parseAs<JsonResult<string>> x)
         | false ->
             return JsonResult.Error post.StatusText
-    }  
+    }
 
    
 let ofResult response =
@@ -42,8 +64,13 @@ let ofResult response =
         Loaded (Result.Error (Exception(result)))
 
 let ofFail ex = Loaded (Result.Error ex)
-    
-let loadCmd newModel = Cmd.ofPromise fakeLoad newModel ofResult ofFail
+
+let loadCmd newModel =
+    let requestDataAndUrl =
+        { Model = newModel
+          Api = generateUrl baseUrl GenerateStructure }
+
+    Cmd.ofPromise generateDataStructure requestDataAndUrl ofResult ofFail
 
 let update msg model =
     match msg with
