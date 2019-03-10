@@ -20,7 +20,7 @@ type Msg =
     | BuildTypes of string
     | CollectionGenerationSelected of CollectionGeneration
     | OutputFeatureSelected of OutputFeature
-    | Loaded of Result<string, exn>
+    | GenerateStructureLoaded of Result<string, exn>
     | RootNameChanged of string
 
 type JsonResult<'a> =

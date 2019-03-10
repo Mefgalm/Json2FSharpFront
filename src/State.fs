@@ -36,7 +36,7 @@ let init args =
       RootObjectName = "Root"
       Output = "" }, Cmd.none   
 
-let private generateDataStructure requestDataAndRoute =
+let private generateDataStructureApi requestDataAndRoute =
     promise {
         let data =
             { Data = requestDataAndRoute.Model.Input
@@ -59,34 +59,34 @@ let private generateDataStructure requestDataAndRoute =
 let ofResult response =
     match response with
     | JsonResult.Ok result ->
-        Loaded (Result.Ok result)
+        GenerateStructureLoaded (Result.Ok result)
     | JsonResult.Error result ->
-        Loaded (Result.Error (Exception(result)))
+        GenerateStructureLoaded (Result.Error (Exception(result)))
 
-let ofFail ex = Loaded (Result.Error ex)
+let ofFail ex = GenerateStructureLoaded (Result.Error ex)
 
-let loadCmd newModel =
+let generateStructureCmd newModel =
     let requestDataAndUrl =
         { Model = newModel
           Api = generateUrl baseUrl GenerateStructure }
 
-    Cmd.ofPromise generateDataStructure requestDataAndUrl ofResult ofFail
+    Cmd.ofPromise generateDataStructureApi requestDataAndUrl ofResult ofFail
 
 let update msg model =
     match msg with
     | BuildTypes value ->
         let newModel = { model with Input = value }
-        newModel, loadCmd newModel
+        newModel, generateStructureCmd newModel
     | RootNameChanged rootName ->
         let newModel = { model with RootObjectName = rootName }
-        newModel, loadCmd newModel
-    | Loaded (Result.Ok result) ->
+        newModel, generateStructureCmd newModel
+    | GenerateStructureLoaded (Result.Ok result) ->
         { model with Output = result }, Cmd.none
-    | Loaded (Result.Error e) ->
+    | GenerateStructureLoaded (Result.Error e) ->
         { model with Output = e.Message }, Cmd.none
     | CollectionGenerationSelected collectionGeneration ->
         let newModel = { model with CollGeneration = collectionGeneration }
-        newModel, loadCmd newModel
+        newModel, generateStructureCmd newModel
     | OutputFeatureSelected outputFeature ->
         let newModel = { model with OutputFeature = outputFeature }
-        newModel, loadCmd newModel
+        newModel, generateStructureCmd newModel
