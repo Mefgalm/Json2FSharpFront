@@ -51,13 +51,13 @@ let header =
               [ div [ ClassName "github-front" ]
                     [ label [] [ str "Source code " ]
                       a [ ClassName "link"
-                          Href "https://google.com"
+                          Href "https://github.com/Mefgalm/Json2FSharpFront"
                           Target "_blank" ]
                         [ str "front-end" ] ]
                 div [ ClassName "github-back" ]
                     [ label [] [ str "Source code " ]
                       a [ ClassName "link"
-                          Href "https://google.com"
+                          Href "https://github.com/Mefgalm/Json2FSharpBack"
                           Target "_blank" ]
                         [ str "back-end" ] ] ] ]
 
