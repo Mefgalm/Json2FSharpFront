@@ -17,12 +17,13 @@ type KeyValue<'key, 'value> =
 let collectionGenerationSet = Set.ofList [
         { Key = Types.List; Value = "List" }
         { Key = Types.Array; Value = "Array" }
+        { Key = Types.Sequence; Value = "Sequence" }
         { Key = Types.CharpList; Value = "List<T>" }
     ]
 
 let outputFeatureSet = Set.ofList [
         { Key = JustTypes; Value = "Just Types" }
-        { Key = NewtosoftAttributes; Value = "Newtosoft Attributes" }
+        { Key = NewtosoftAttributes; Value = "Newtonsoft" }
     ]
 
 let dropDown<'b, 'a when 'a : equality> className (item: 'a) (items: seq<KeyValue<'a, 'b>>) toView dispatch msg =

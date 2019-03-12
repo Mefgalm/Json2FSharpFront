@@ -3,6 +3,7 @@ module Types
 type CollectionGeneration =
     | List
     | Array
+    | Sequence
     | CharpList
 
 type OutputFeature =
