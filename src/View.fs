@@ -62,6 +62,7 @@ let header =
                           Target "_blank" ]
                         [ str "back-end" ] ] ] ]
 
+
 let inputBlock (model: Model) dispatch =
     div [ ClassName "input-area" ]
         [ div [ ClassName "input-block" ]
@@ -70,6 +71,7 @@ let inputBlock (model: Model) dispatch =
                         Value model.RootObjectName
                         OnChange (fun ev -> !!ev.target?value |> RootNameChanged |> dispatch)] ]
           textarea [ ClassName "input-text-area"
+                     DefaultValue model.Input
                      OnChange (fun ev -> !!ev.target?value |> BuildTypes |> dispatch)] [] ]
 
 let outputBlock model =

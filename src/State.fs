@@ -29,13 +29,6 @@ let private baseUrl =
     #endif
     productionUrl
 
-let init args =
-    { CollGeneration = CollectionGeneration.List
-      OutputFeature = JustTypes
-      Input = ""
-      RootObjectName = "Root"
-      Output = "" }, Cmd.none   
-
 let private generateDataStructureApi requestDataAndRoute =
     promise {
         let data =
@@ -55,7 +48,6 @@ let private generateDataStructureApi requestDataAndRoute =
             return JsonResult.Error post.StatusText
     }
 
-   
 let ofResult response =
     match response with
     | JsonResult.Ok result ->
@@ -71,6 +63,22 @@ let generateStructureCmd newModel =
           Api = generateUrl baseUrl GenerateStructure }
 
     Cmd.ofPromise generateDataStructureApi requestDataAndUrl ofResult ofFail
+
+let inputDefault =
+    "{
+    \"Welcome\": \"Json2FSharp\"
+}"
+
+
+let init args =
+    let initModel =
+        { CollGeneration = CollectionGeneration.List
+          OutputFeature = JustTypes
+          Input = inputDefault
+          RootObjectName = "Root"
+          Output = "" }
+
+    initModel, generateStructureCmd initModel
 
 let update msg model =
     match msg with
