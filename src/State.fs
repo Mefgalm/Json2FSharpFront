@@ -76,7 +76,7 @@ let init args =
           OutputFeature = JustTypes
           Input = inputDefault
           RootObjectName = "Root"
-          Output = "" }
+          Output = Success "" }
 
     initModel, generateStructureCmd initModel
 
@@ -89,9 +89,9 @@ let update msg model =
         let newModel = { model with RootObjectName = rootName }
         newModel, generateStructureCmd newModel
     | GenerateStructureLoaded (Result.Ok result) ->
-        { model with Output = result }, Cmd.none
+        { model with Output = Success result }, Cmd.none
     | GenerateStructureLoaded (Result.Error e) ->
-        { model with Output = e.Message }, Cmd.none
+        { model with Output = Fail e.Message }, Cmd.none
     | CollectionGenerationSelected collectionGeneration ->
         let newModel = { model with CollGeneration = collectionGeneration }
         newModel, generateStructureCmd newModel

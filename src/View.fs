@@ -9,11 +9,6 @@ open Fable.Helpers.React.Props
 open Fable.FontAwesome
 open Fable.Import
 
-
-type KeyValue<'key, 'value> =
-    { Key: 'key
-      Value: 'value }
-
 let collectionGenerationSet = Set.ofList [
         { Key = Types.List; Value = "List" }
         { Key = Types.Array; Value = "Array" }
@@ -75,10 +70,19 @@ let inputBlock (model: Model) dispatch =
                      OnChange (fun ev -> !!ev.target?value |> BuildTypes |> dispatch)] [] ]
 
 let outputBlock model =
+    let getText = function
+        | Success text -> text
+        | Fail text -> text
+
+    let getColor = function
+        | Success _ -> "#BEBDC5"
+        | Fail _ -> "#ED2939"
+
     div [ ClassName "output-area" ]
         [ textarea [ ClassName "output-text-area"
-                     ReadOnly true                
-                     Value model.Output ] [] ]
+                     ReadOnly true
+                     Style [ Color (getColor (model.Output)) ]
+                     Value (getText model.Output) ] [] ]
 
 let settings model dispatch  =
     div [ ClassName "settings" ]

@@ -10,12 +10,16 @@ type OutputFeature =
     | JustTypes
     | NewtosoftAttributes
 
+type Output =
+    | Success of string
+    | Fail of string
+
 type Model =
     { CollGeneration: CollectionGeneration
       OutputFeature: OutputFeature
       Input: string
       RootObjectName: string
-      Output: string }
+      Output: Output }
 
 type Msg =
     | BuildTypes of string
@@ -33,3 +37,7 @@ type Request =
       RootObjectName : string
       ListGeneratorType: CollectionGeneration
       TypeGeneration: OutputFeature }
+
+type KeyValue<'key, 'value> =
+    { Key: 'key
+      Value: 'value }
