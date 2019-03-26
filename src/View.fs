@@ -78,11 +78,15 @@ let outputBlock model =
         | Success _ -> "#BEBDC5"
         | Fail _ -> "#ED2939"
 
+    let pre props children = domEl "pre" props children
+    let code props children = domEl "code" props children
+
     div [ ClassName "output-area" ]
         [ textarea [ ClassName "output-text-area"
                      ReadOnly true
                      Style [ Color (getColor (model.Output)) ]
-                     Value (getText model.Output) ] [] ]
+                     Value (getText model.Output) ] []
+          pre [] [ code [ClassName "language-fsharp"] [str "let t = 4"] ]]
 
 let settings model dispatch  =
     div [ ClassName "settings" ]
