@@ -70,12 +70,13 @@ let inputDefault =
 }"
 
 
-let init args =
+let init _ =
     let initModel =
         { CollGeneration = CollectionGeneration.List
           OutputFeature = JustTypes
           Input = inputDefault
           RootObjectName = "Root"
+          ShowSettings = true
           Output = Success "" }
 
     initModel, generateStructureCmd initModel
@@ -98,3 +99,6 @@ let update msg model =
     | OutputFeatureSelected outputFeature ->
         let newModel = { model with OutputFeature = outputFeature }
         newModel, generateStructureCmd newModel
+    | ToggleSettings ->
+        let newModel = { model with ShowSettings = not (model.ShowSettings) }
+        newModel, Cmd.none
