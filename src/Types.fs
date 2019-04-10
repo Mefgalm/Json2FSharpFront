@@ -19,6 +19,7 @@ type Model =
       OutputFeature: OutputFeature
       Input: string
       RootObjectName: string
+      ShowSettings: bool
       Output: Output }
 
 type Msg =
@@ -27,6 +28,7 @@ type Msg =
     | OutputFeatureSelected of OutputFeature
     | GenerateStructureLoaded of Result<string, exn>
     | RootNameChanged of string
+    | ToggleSettings
 
 type JsonResult<'a> =
     | Ok of 'a

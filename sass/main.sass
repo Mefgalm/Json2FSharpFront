@@ -43,6 +43,10 @@ textarea, select, input, button
     font-size: 25px
     color: orange
 
+.actions
+    display: flex
+    align-items: center
+    
 .links
     display: flex
     flex-direction: column
@@ -100,8 +104,9 @@ textarea, select, input, button
 .settings
     z-index: 1
     width: 230px
+    will-change: right
+    transition: right 0.5s ease-in-out
     position: absolute
-    right: 0
     margin: 20px
     background-color: orange
     display: flex
@@ -128,3 +133,13 @@ textarea, select, input, button
     width: 8px
     background-color: orange
     cursor: col-resize
+
+.github-icon
+    background-image: url('/img/GitHub-Mark-Light-32px.png')
+    background-size: contain
+    height: 16px
+    width: 16px
+
+.github-link
+    display: flex
+    align-items: center
