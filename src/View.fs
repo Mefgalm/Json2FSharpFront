@@ -86,7 +86,6 @@ let outputBlock model =
     div [ ClassName "output-area" ]
         [ textarea [ ClassName "output-text-area"
                      ReadOnly true
-                     Disabled true
                      Style [ Color (getColor (model.Output)) ]
                      Value (getText model.Output) ] [] ]
 
