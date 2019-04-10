@@ -60,8 +60,7 @@ let header model dispatch =
                             a [ ClassName "link"
                                 Href "https://github.com/Mefgalm/Json2FSharpBack"
                                 Target "_blank" ]
-                              [ str "back" ] ]
-                    ] ] ]
+                              [ str "back" ] ] ] ] ]
 
 
 let inputBlock (model: Model) dispatch =
@@ -84,19 +83,14 @@ let outputBlock model =
         | Success _ -> "#BEBDC5"
         | Fail _ -> "#ED2939"
 
-    //let pre props children = domEl "pre" props children
-    //let code props children = domEl "code" props children
-
     div [ ClassName "output-area" ]
         [ textarea [ ClassName "output-text-area"
                      ReadOnly true
                      Style [ Color (getColor (model.Output)) ]
                      Value (getText model.Output) ] [] ]
 
-    //pre [] [ code [ClassName "language-fsharp"] [str "let t = 4"] ]
-
 let settings model dispatch  =
-    let settingsDisplay show = Right (if show then "0px" else "-250px")
+    let settingsDisplay show = Display (if show then "block" else "none")
 
     div [ ClassName "settings"; Style [ (settingsDisplay model.ShowSettings) ] ]
         [ div [ ClassName "setting-row" ]
