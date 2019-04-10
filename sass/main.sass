@@ -53,7 +53,7 @@ textarea, select, input, button
 
 .link
     color: white
-    text-decoration: underline
+    text-decoration: none
     font-weight: bold
     &:hover
         color: orange
@@ -104,6 +104,7 @@ textarea, select, input, button
 .settings
     z-index: 1
     width: 230px
+    top: 60px
     will-change: right
     transition: right 0.5s ease-in-out
     position: absolute
@@ -139,7 +140,40 @@ textarea, select, input, button
     background-size: contain
     height: 16px
     width: 16px
+    margin-right: 5px
 
 .github-link
     display: flex
     align-items: center
+
+.settings-toggle-btn
+    margin-right: 30px
+    margin-left: 10px
+    padding-left: 15px
+    padding-right: 15px
+    padding-top: 5px
+    padding-bottom: 5px
+    background-color: #38373D
+    -webkit-box-shadow: 0px 5px 4px 0px rgba(0, 0, 0, 0.75)
+    -moz-box-shadow:    0px 5px 4px 0px rgba(0, 0, 0, 0.75)
+    box-shadow:         0px 5px 4px 0px rgba(0, 0, 0, 0.75)
+
+@media (max-width: 48em)
+    .output-area
+        width: 100% !important
+        height: 50% !important
+
+    .input-area
+        width: 100% !important
+        height: 50% !important
+
+    .area
+        display: block !important
+        height: 100% !important
+
+    @media (max-width: 22em)
+        .project-name
+            display: none
+
+        .header
+            justify-content: center

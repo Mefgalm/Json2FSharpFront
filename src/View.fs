@@ -46,7 +46,8 @@ let header model dispatch =
     div [ ClassName "header" ]
         [ label [ ClassName "project-name" ] [ str "Json2FSharp" ]          
           div [ ClassName "actions" ]
-              [ div [ OnClick (fun _ -> ToggleSettings |> dispatch) ] [ str (settingsToggleText model.ShowSettings) ]
+              [ div [ ClassName "settings-toggle-btn"
+                      OnClick (fun _ -> ToggleSettings |> dispatch) ] [ str (settingsToggleText model.ShowSettings) ]
                 div [ ClassName "links"]
                     [ div [ ClassName "github-link" ]
                           [ div [ Class "github-icon"] []
