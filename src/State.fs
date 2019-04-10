@@ -24,9 +24,9 @@ type private RequestDataAndRoute<'a>  =
       Api: Api }
 
 let private baseUrl =
-    //#if DEBUG
-    //devUrl
-    //#endif
+    #if DEBUG
+    devUrl
+    #endif
     productionUrl
 
 let private generateDataStructureApi requestDataAndRoute =
