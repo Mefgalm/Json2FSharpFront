@@ -44,7 +44,10 @@ let header model dispatch =
     let settingsToggleText show = if show then "Hide" else "Show"
 
     div [ ClassName "header" ]
-        [ label [ ClassName "project-name" ] [ str "Json2FSharp" ]          
+        [ div
+            []
+            [ label [ ClassName "project-name" ] [ str "Json2FSharp" ]
+              label [ ClassName "project-description" ] [ str "json to F# converter" ] ]
           div [ ClassName "actions" ]
               [ div [ ClassName "settings-toggle-btn"
                       OnClick (fun _ -> ToggleSettings |> dispatch) ] [ str (settingsToggleText model.ShowSettings) ]
