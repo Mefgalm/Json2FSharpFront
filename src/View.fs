@@ -8,6 +8,7 @@ open Fable.Core.JsInterop
 open Fable.Helpers.React.Props
 open Fable.FontAwesome
 open Fable.Import
+open Fable.Import.React
 
 let collectionGenerationSet = Set.ofList [
         { Key = Types.List; Value = "List" }
@@ -33,13 +34,13 @@ let dropDown<'b, 'a when 'a : equality> className (item: 'a) (items: seq<KeyValu
                     [ Fa.i [ Fa.Solid.AngleDown ] [] ] ] ]
         Dropdown.menu []
             [ Dropdown.content []
-                [ yield! items 
-                            |> Seq.map(fun x -> div []                                              
-                                                    [ Dropdown.Item.a 
+                [ yield! items
+                            |> Seq.map(fun x -> div []
+                                                    [ Dropdown.Item.a
                                                         [ Dropdown.Item.IsActive (getKey x = item)
-                                                          Dropdown.Item.Props [ OnClick (fun _ -> dispatch (msg (x |> getKey)) ) ] ] 
+                                                          Dropdown.Item.Props [ OnClick (fun _ -> dispatch (msg (x |> getKey)) ) ] ]
                                                         [ str (x |> toView) ] ]) ] ] ]
-     
+
 let header model dispatch =
     let settingsToggleText show = if show then "Hide" else "Show"
 
@@ -66,6 +67,25 @@ let header model dispatch =
                               [ str "back" ] ] ] ] ]
 
 
+let onKeydownInputHandler (e: KeyboardEvent) =
+    let target = e.target :?> Browser.HTMLTextAreaElement
+    // get caret position or selection
+    let start = int target.selectionStart
+    let selectionEnd = int target.selectionEnd
+    if e.keyCode = 9.0 then
+        // how many characters will be inserted
+        let offset = 4
+        // set text area value to: text before caret + new spaces + text after caret
+        target.value <-
+            target.value.Substring(0, start)
+                + String.replicate offset " "
+                + target.value.Substring selectionEnd
+        // put caret at right position
+        target.selectionStart <- float (start + offset)
+        target.selectionEnd <- target.selectionStart
+        // prevent textarea focus loose
+        e.preventDefault ()
+
 let inputBlock (model: Model) dispatch =
     div [ ClassName "input-area" ]
         [ div [ ClassName "input-block" ]
@@ -75,6 +95,7 @@ let inputBlock (model: Model) dispatch =
                         OnChange (fun ev -> !!ev.target?value |> RootNameChanged |> dispatch)] ]
           textarea [ ClassName "input-text-area"
                      DefaultValue model.Input
+                     OnKeyDown onKeydownInputHandler
                      OnChange (fun ev -> !!ev.target?value |> BuildTypes |> dispatch)] [] ]
 
 let outputBlock model =
@@ -103,7 +124,7 @@ let settings model dispatch  =
               [ label [] [ str "Output features" ]
                 dropDown "dropdown" model.OutputFeature outputFeatureSet (fun { Value = x } -> x.ToString()) dispatch OutputFeatureSelected ] ]
 
-let drag = !^(fun e ->                
+let drag = !^(fun e ->
                 let outputAreaWidth = Browser.window.innerWidth - e?pageX
                 let inputAreaWidth = Browser.window.innerWidth - outputAreaWidth
                 Browser.document.getElementsByClassName("input-area").[0]?style?width <- sprintf "%ipx" (inputAreaWidth |> int)
