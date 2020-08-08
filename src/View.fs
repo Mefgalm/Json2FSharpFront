@@ -67,7 +67,7 @@ let header model dispatch =
                               [ str "back" ] ] ] ] ]
 
 
-let onKeydownInputHandler (e: KeyboardEvent) =
+let onKeydownInputHandler dispatch (e: KeyboardEvent) =
     let target = e.target :?> Browser.HTMLTextAreaElement
     // get caret position or selection
     let start = int target.selectionStart
@@ -80,6 +80,7 @@ let onKeydownInputHandler (e: KeyboardEvent) =
             target.value.Substring(0, start)
                 + String.replicate offset " "
                 + target.value.Substring selectionEnd
+        target.value |> BuildTypes |> dispatch
         // put caret at right position
         target.selectionStart <- float (start + offset)
         target.selectionEnd <- target.selectionStart
@@ -95,7 +96,7 @@ let inputBlock (model: Model) dispatch =
                         OnChange (fun ev -> !!ev.target?value |> RootNameChanged |> dispatch)] ]
           textarea [ ClassName "input-text-area"
                      DefaultValue model.Input
-                     OnKeyDown onKeydownInputHandler
+                     OnKeyDown (onKeydownInputHandler dispatch)
                      OnChange (fun ev -> !!ev.target?value |> BuildTypes |> dispatch)] [] ]
 
 let outputBlock model =
