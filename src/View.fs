@@ -8,6 +8,7 @@ open Fable.Core.JsInterop
 open Fable.Helpers.React.Props
 open Fable.FontAwesome
 open Fable.Import
+open Fable.Import.React
 
 let collectionGenerationSet = Set.ofList [
         { Key = Types.List; Value = "List" }
@@ -66,6 +67,26 @@ let header model dispatch =
                               [ str "back" ] ] ] ] ]
 
 
+let onKeydownInputHandler dispatch (e: KeyboardEvent) =
+    let target = e.target :?> Browser.HTMLTextAreaElement
+    // get caret position or selection
+    let start = int target.selectionStart
+    let selectionEnd = int target.selectionEnd
+    if e.keyCode = 9.0 then
+        // how many characters will be inserted
+        let offset = 4
+        // set text area value to: text before caret + new spaces + text after caret
+        target.value <-
+            target.value.Substring(0, start)
+                + String.replicate offset " "
+                + target.value.Substring selectionEnd
+        target.value |> BuildTypes |> dispatch
+        // put caret at right position
+        target.selectionStart <- float (start + offset)
+        target.selectionEnd <- target.selectionStart
+        // prevent textarea focus loose
+        e.preventDefault ()
+
 let inputBlock (model: Model) dispatch =
     div [ ClassName "input-area" ]
         [ div [ ClassName "input-block" ]
@@ -75,8 +96,7 @@ let inputBlock (model: Model) dispatch =
                         OnChange (fun ev -> !!ev.target?value |> RootNameChanged |> dispatch)] ]
           textarea [ ClassName "input-text-area"
                      DefaultValue model.Input
-                     //Value model.Input
-                     //Input.ValueOrDefault model.Input
+                     OnKeyDown (onKeydownInputHandler dispatch)
                      OnChange (fun ev -> !!ev.target?value |> BuildTypes |> dispatch)] [] ]
 
 let outputBlock model =
