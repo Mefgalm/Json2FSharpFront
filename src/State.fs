@@ -82,7 +82,7 @@ let init _ =
 let regex = Regex("[^\x00-\x80]")
 
 let replaceUnicode (value: string) =
-    regex.Replace(value, "")
+    regex.Replace(value, "•")
 
 let update msg model =
     match msg with

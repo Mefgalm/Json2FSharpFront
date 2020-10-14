@@ -87,6 +87,9 @@ let onKeydownInputHandler dispatch (e: KeyboardEvent) =
         // prevent textarea focus loose
         e.preventDefault ()
 
+let inline valueOrDefault value =
+    Ref <| (fun e -> if e |> isNull |> not && !!e?value <> !!value then e?value <- !!value)
+
 let inputBlock (model: Model) dispatch =
     div [ ClassName "input-area" ]
         [ div [ ClassName "input-block" ]
@@ -95,7 +98,7 @@ let inputBlock (model: Model) dispatch =
                         Value model.RootObjectName
                         OnChange (fun ev -> !!ev.target?value |> RootNameChanged |> dispatch)] ]
           textarea [ ClassName "input-text-area"
-                     DefaultValue model.Input
+                     valueOrDefault model.Input
                      OnKeyDown (onKeydownInputHandler dispatch)
                      OnChange (fun ev -> !!ev.target?value |> BuildTypes |> dispatch)] [] ]
 
