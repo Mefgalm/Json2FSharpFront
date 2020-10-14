@@ -7,6 +7,7 @@ open Fable.PowerPack.Fetch
 open System
 open Fable.Import
 open Fable.SimpleJson
+open System.Text.RegularExpressions
 
 let productionUrl = "https://json2fsharp.com/api/"
 let devUrl = "http://localhost:51014/"
@@ -78,10 +79,15 @@ let init _ =
 
     initModel, generateStructureCmd initModel
 
+let regex = Regex("[^\x00-\x80]")
+
+let replaceUnicode (value: string) =
+    regex.Replace(value, "")
+
 let update msg model =
     match msg with
     | BuildTypes value ->
-        let newModel = { model with Input = value }
+        let newModel = { model with Input = replaceUnicode value }
         newModel, generateStructureCmd newModel
     | RootNameChanged rootName ->
         let newModel = { model with RootObjectName = rootName }
