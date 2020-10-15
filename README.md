@@ -8,5 +8,4 @@ Back-end [here](https://github.com/Mefgalm/Json2FSharpBack)
 
 ### Todo
 1) Syntax highlight
-2) Responsive design
-3) Idiomatic scrollbars
+2) Idiomatic scrollbars
